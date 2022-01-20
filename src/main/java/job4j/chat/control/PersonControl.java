@@ -2,6 +2,7 @@ package job4j.chat.control;
 
 import job4j.chat.entity.Person;
 import job4j.chat.service.PersonService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,9 +14,11 @@ import java.util.stream.StreamSupport;
 public class PersonControl {
 
     private final PersonService persons;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public PersonControl(PersonService persons) {
+    public PersonControl(PersonService persons, BCryptPasswordEncoder passwordEncoder) {
         this.persons = persons;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -30,8 +33,9 @@ public class PersonControl {
         return persons.findById(id);
     }
 
-    @PostMapping("/")
+    @PostMapping("/sing-up")
     public Person savePerson(@RequestBody Person person) {
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
         return persons.savePerson(person);
     }
 

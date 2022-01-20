@@ -3,7 +3,7 @@ package job4j.chat.service;
 import job4j.chat.entity.Person;
 import job4j.chat.repository.PersonRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RestController;
+
 
 import java.util.ArrayList;
 import java.util.List;
