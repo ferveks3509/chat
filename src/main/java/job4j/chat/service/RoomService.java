@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoomService {
@@ -22,8 +23,8 @@ public class RoomService {
         return rsl;
     }
 
-    public Room findRoomById(int id) {
-        return roomRepository.findById(id).get();
+    public Optional<Room> findRoomById(int id) {
+        return roomRepository.findById(id);
     }
 
     public Room saveRoom(Room room) {

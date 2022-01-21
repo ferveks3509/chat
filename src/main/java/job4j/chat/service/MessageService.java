@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MessageService {
@@ -22,8 +23,8 @@ public class MessageService {
         return rsl;
     }
 
-    public Message findMessageById(int id) {
-        return messageRepository.findById(id).get();
+    public Optional<Message> findMessageById(int id) {
+        return messageRepository.findById(id);
     }
 
     public Message saveMessage(Message message) {

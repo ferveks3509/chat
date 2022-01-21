@@ -2,6 +2,8 @@ package job4j.chat.control;
 
 import job4j.chat.entity.Message;
 import job4j.chat.service.MessageService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +24,19 @@ public class MessageControl {
     }
 
     @GetMapping("/{id}")
-    public Message findMessageById(@PathVariable int id) {
-        return messages.findMessageById(id);
+    public ResponseEntity<Message> findMessageById(@PathVariable int id) {
+        var message = messages.findMessageById(id);
+        return new ResponseEntity<>(
+                message.orElse(new Message()),
+                message.isPresent()? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 
     @PostMapping("/")
     public Message saveMessage(@RequestBody Message message) {
+        if (message.getText() == null) {
+            throw new NullPointerException("Введите сообщение");
+        }
         return messages.saveMessage(message);
     }
 

@@ -2,6 +2,8 @@ package job4j.chat.control;
 
 import job4j.chat.entity.Room;
 import job4j.chat.service.RoomService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,12 +24,19 @@ public class RoomControl {
     }
 
     @GetMapping("/{id}")
-    public Room findRoomById(@PathVariable int id) {
-        return rooms.findRoomById(id);
+    public ResponseEntity<Room> findRoomById(@PathVariable int id) {
+        var room = rooms.findRoomById(id);
+        return new ResponseEntity<>(
+                room.orElse(new Room()),
+                room.isPresent()? HttpStatus.OK : HttpStatus.NOT_FOUND
+        );
     }
 
     @PostMapping("/")
     public Room saveRoom(Room room) {
+        if (room.getName() == null) {
+            throw new NullPointerException("Введите название комнаты");
+        }
         return rooms.saveRoom(room);
     }
 
